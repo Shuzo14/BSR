@@ -1,10 +1,9 @@
-#Function for bank statement reader (input: filepath, bank name[optional])
-import numpy as np                        # Numerical Python package
-import tabula                             # PDF table extra package
-import pandas as pd
-import operator as op
 import sys
 import json
+import tabula   
+import numpy as np                                                    
+import pandas as pd
+import operator as op
 from collections import namedtuple
 from dateutil.parser import parse
 from werkzeug.wrappers import response # Fixing the dates
@@ -17,10 +16,8 @@ def json_bankstatements(json_list):
         all_statements = []
         for i in all_data_values:
             all_statements.append(i)
-        
         json_output.append(all_statements)
-    
-    return json_output
+    return (json_output)
 
 def columns(cols, trans_list):
     trans_ind = []
@@ -29,8 +26,7 @@ def columns(cols, trans_list):
             if cols[i] in trans_list[j]:
                 data = cols[i]
                 trans_ind.append(i)   
-                 
-    return(trans_ind)
+    return (trans_ind)
 
 def tables(df,df_list):
     num_row = 0
@@ -45,10 +41,9 @@ def tables(df,df_list):
     data_pdf = data_pdf.replace(np.nan,'')
     repete = data_pdf.shape[1]-len(pdf_columns)
     
-    for add in range(repete):
+    for _ in range(repete):
         pdf_columns.append('columns')
-
-    return data_pdf
+    return (data_pdf)
 
 def unknown_columns(tab_cols, col_list):
     table_columns = []
@@ -58,8 +53,7 @@ def unknown_columns(tab_cols, col_list):
             table_columns.append(col_name)
         else:
             table_columns.append("Unknown_column")
-    
-    return(table_columns)
+    return (table_columns)
 
 def bank_statement_read(file_path,bank_name):
     
@@ -68,7 +62,6 @@ def bank_statement_read(file_path,bank_name):
         import warnings
         warnings.simplefilter("ignore")
     
-    #to visualize more rows and columns in the panda DataFrame
     pd.set_option('display.max_rows',None)
     pd.set_option('display.max_columns',None)
 
@@ -119,7 +112,7 @@ def bank_statement_read(file_path,bank_name):
     row_index = []
     
     table_columns = unknown_columns(tab_cols, col_list)
-    uc_count=op.countOf(table_columns, "Unknown_column")
+    uc_count = op.countOf(table_columns, "Unknown_column")
     
     if uc_count>=3 or len(table_columns)<=3:
         for row_ind in range(col_len-1):
@@ -137,9 +130,7 @@ def bank_statement_read(file_path,bank_name):
             data2 = df_list[2]
             data3 = df_list[lst_no]
             
-            data1_columns = []
-            data2_columns = []
-            data3_columns = []
+            data1_columns,data2_columns, data3_columns = [], [], []
             
             page_data1 = data1.values.tolist()
             page_data2 = data2.values.tolist()
@@ -171,11 +162,11 @@ def bank_statement_read(file_path,bank_name):
             
             for ls in range(len(df_list)):
                 page_data = df[ls].values.tolist()
-                pdf_data = pdf_data+page_data
+                pdf_data = pdf_data + page_data
             data1_pdf = pd.DataFrame(pdf_data)
             repete = data1_pdf.shape[1]-len(data_tab_cols)
             
-            for add in range(repete):
+            for _ in range(repete):
                 data_tab_cols.append('column_added')
             
             pdf_data = pd.DataFrame(pdf_data, columns = data_tab_cols)
@@ -200,7 +191,6 @@ def bank_statement_read(file_path,bank_name):
                 if columns_list[elem] in col_list:
                     col_name = columns_list[elem]
                     row_columns.append(col_name)
-            
             data1 = df_list[1]
             data1 = data1.values.tolist()
             
@@ -211,7 +201,7 @@ def bank_statement_read(file_path,bank_name):
             pdf_data1 = pd.DataFrame(data1)    
             repete = pdf_data1.shape[1]-len(row_columns)
             
-            for add in range(repete):
+            for _ in range(repete):
                 row_columns.append('column_added')
             
             pdf_data = pd.DataFrame(data1, columns = row_columns)
@@ -230,7 +220,7 @@ def bank_statement_read(file_path,bank_name):
         new_com_table = data_pdf.rename(columns = data_pdf.iloc[0]).drop(data_pdf.index[0])
 
     cols = list(com_table.columns)
-    cols1 = list(new_com_table.columns)
+    # cols1 = list(new_com_table.columns)
     
     trans_list = [date_list, narration_list, credit_list, debit_list, balance_list,]
     trans_ind = columns(cols, trans_list)
@@ -300,7 +290,7 @@ def bank_statement_read(file_path,bank_name):
     data = data.drop(unique_row_index,axis=0)
     salary1 = data[data["Narration"].str.contains("SALARY")]
     salary2 = data[data["Narration"].str.contains("Salary")]
-    sala_cr = data[data["Narration"].str.contains("CREDIT")]
+    # sala_cr = data[data["Narration"].str.contains("CREDIT")]
     salary3 = data[data["Narration"].str.contains("salary")]
     sal_ac = data[data["Narration"].str.contains("SAL")]
     sal_fl = data[data["Narration"].str.contains("Sal")]

@@ -37,7 +37,7 @@ def tables(df,df_list):
     data_pdf = data_pdf.replace(np.nan,'')
     repete = data_pdf.shape[1]-len(pdf_columns)
     
-    for add in range(repete):
+    for _ in range(repete):
         pdf_columns.append('columns')
 
     return data_pdf
@@ -167,7 +167,7 @@ def bank_statement_read(file_path,bank_name):
             data1_pdf = pd.DataFrame(pdf_data)
             repete = data1_pdf.shape[1]-len(data_tab_cols)
             
-            for add in range(repete):
+            for _ in range(repete):
                 data_tab_cols.append('column_added')
             
             pdf_data = pd.DataFrame(pdf_data, columns = data_tab_cols)
@@ -203,7 +203,7 @@ def bank_statement_read(file_path,bank_name):
             pdf_data1 = pd.DataFrame(data1)    
             repete = pdf_data1.shape[1]-len(row_columns)
             
-            for add in range(repete):
+            for _ in range(repete):
                 row_columns.append('column_added')
             
             pdf_data = pd.DataFrame(data1, columns = row_columns)

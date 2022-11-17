@@ -21,5 +21,10 @@ def bankStatement():
     os.remove('/tmp/'+timestr+".pdf")
     return(bank)
 
+@app.route('/bankstatement', methods=['GET'])
+def _get_():
+    bs = { "file_path": request.json['file_path'], "bank_name":request.json['bank_name']}
+    return (bs)
+
 if __name__ == '__main__':
 	app.run(debug=True)
